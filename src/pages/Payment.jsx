@@ -127,9 +127,12 @@ const Payment = () => {
             type="number"
             name="amount"
             placeholder="Enter Amount"
-            value={formData.amount}
+            value={45000000 / 100} // Convert back to Naira
+            readOnly
             onChange={handleChange}
             required
+             // Shows as ₦500 (converted from kobo)
+           
             min="100" // Minimum amount (₦100)
           />
 
