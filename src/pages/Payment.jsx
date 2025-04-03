@@ -53,7 +53,7 @@ const Payment = () => {
 
       const reference = response.data.data.reference; // Adjust based on actual response structure
       localStorage.setItem("payment_reference", reference);
-      localStorage.setItem("selected_course_track", formData.course);
+      localStorage.setItem("selected_course_track", formData.track);
 
       const successUrl = `${window.location.origin}/payment-success?reference=${reference}&email=${encodeURIComponent(formData.email)}`;
       const authorizationUrl = `${
