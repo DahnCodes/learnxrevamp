@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import learnxx from "../assets/learnxx.png";
 import { useState } from "react";
 import axios from "axios";
+// import "../styles/goback.css"
 
 
 const Register = () => {

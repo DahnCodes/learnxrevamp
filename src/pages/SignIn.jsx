@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/slice/authSlice";
+// import Goback from "../components/Goback";
 
 const SignIn = () => {
   const [inputs, setInputs] = useState({
@@ -66,6 +67,7 @@ const SignIn = () => {
   return (
     <>
       <div className="auth_layout11111">
+        {/* <Goback/> */}
       <div className="signin">
         <div className="signin__header">
           <img src={learnxx} alt="" className="loginimg" />

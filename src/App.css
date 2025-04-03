@@ -795,7 +795,7 @@ h4 {
 .input {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: hidden; 
 }
 
 .input label {
@@ -820,17 +820,18 @@ h4 {
 }
 
 .inputlogin {
-  border: 1px solid black;
+  border: 1px solid #B1B1B1;
   border-radius: 10px;
-  height: 40px;
-  width: 300px;
+  height: 50px;
+  width: 430px;
 }
 
+
 .signup__btn {
-  border: 1px solid black;
+  border: none;
   border-radius: 10px;
-  height: 40px;
-  width: 300px;
+  height: 50px;
+  width: 430px;
   color: white;
   background-color: #ff7b00;
 }
@@ -1473,5 +1474,71 @@ flex-direction: column;
     max-width: 300px;
     margin: 0 auto;
     display: block;
+  }
+
+  .auth_layout {
+    background-position: center;
+    padding: 20px;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .signup, .signin {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    padding: 20px 0px;
+    margin: 20px auto;
+  }
+
+  .signup__header, .signin__header {
+    padding-top: 10px;
+  }
+
+  .loginimg {
+    height: 40px;
+    width: 40px;
+  }
+
+  .inputlogin, .signup__btn {
+    width: 90%;
+    max-width: 430px;
+  }
+
+  .signup_form, .signin_form {
+    width: 100%;
+    row-gap: 15px;
+  }
+
+  .input, .input1 {
+    width: 100%;
+  }
+
+  .inputdiv {
+    margin-top: 15px;
+  }
+
+  .login_link {
+    justify-content: center;
+    margin-top: 15px;
+  }
+
+  .checkbox {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .signup__header__text h4 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+  }
+
+  .signup__header__text p {
+    font-size: 0.9rem;
+  }
+
+  .errorsigin {
+    font-size: 0.8rem;
+    padding: 5px;
   }
 }
