@@ -21,22 +21,43 @@ const Dashboard = () => {
   // const [date, setDate] = useState(new Date(2025, 2, 14)); // Default to 14th March 2025
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
+  
+  const selectedTrack = localStorage.getItem("selected_course_track");
+  
 
   const navigate = useNavigate();
   
   if(!isAuthenticated) {
     navigate("/signin");
   }
+
+  
+  // Function to format track name for display
+  const formatTrackName = (track) => {
+    if (!track) return "Your Course";
+    
+    const trackNames = {
+      frontend: "Frontend Development",
+      backend: "Backend Development",
+      design: "Product Design",
+      uiux: "UI/UX Design",
+      machine: "AI and Machine Learning"
+    };
+    
+    return trackNames[track] || "Your Course";
+  };
+
+  const currentTrack = formatTrackName(selectedTrack);
   return (
     <>
       <div className="dashboardfist">
         <div className="dashboardsec">
-          <h3>Hi, {user?.firstname} (PD)</h3>
+          <h3>Hi, {user?.firstname} ({selectedTrack ? selectedTrack.toUpperCase() : 'PD'})</h3>
 
           <div className="dashboardflex">
             <div className="dashcard">
               <div>
-                <p>Product Design (Stats)</p>
+              <p>{currentTrack} (Stats)</p>
                 <hr />
               </div>
 
