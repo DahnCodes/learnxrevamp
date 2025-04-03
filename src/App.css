@@ -1,7 +1,6 @@
 * {
   padding: 0;
   margin: 0;
- 
   font-family: poppins;
 }
 
@@ -148,83 +147,7 @@
   /* width: 496px; */
   /* height: 725px; */
 }
-.img11 {
-  position: absolute;
-  height: 500px;
-  right: 20%;
-}
 
-.img12 {
-  position: absolute;
-  bottom: 5%;
-  left: 70%;
-}
-
-.img13 {
-  position: absolute;
-  bottom: 45%;
-  right: 78%;
-}
-
-.img14 {
-  position: absolute;
-  bottom: 13%;
-  right: 75%;
-}
-
-.img15 {
-  position: absolute;
-  bottom: 56%;
-  right: 20%;
-}
-
-.img16 {
-  position: absolute;
-  bottom: 30%;
-  right: 20%;
-}
-
-.img17 {
-  position: absolute;
-  bottom: 30%;
-  right: 90%;
-}
-
-.img18 {
-  position: absolute;
-  top: 40%;
-  right: 90%;
-}
-
-.img19 {
-  position: absolute;
-  top: 25%;
-  right: 70%;
-}
-
-.img20 {
-  position: absolute;
-  top: 96%;
-  right: 20%;
-}
-
-.img21 {
-  position: absolute;
-  top: 50%;
-  right: 10%;
-}
-
-.img22 {
-  position: absolute;
-  top: 25%;
-  right: 28%;
-}
-
-.img23 {
-  position: absolute;
-  top: 93%;
-  right: 80%;
-}
 
 .Divland6 {
   /* line-height: 0.3%; */
@@ -1133,7 +1056,7 @@ flex-direction: column;
   /* margin-top: 70px; */
   height: auto;
   margin-top: 100px;
-  padding:80px  100px;
+  padding:80px 100px;
 overflow: visible;
 }
 .choose3 {
@@ -1143,4 +1066,196 @@ flex-direction: column;
   align-items: center;
   /* padding-top: 100px; */
 }
+}
+@media (max-width: 425px) {
+  /* Header Section */
+  .Header {
+    padding: 0 20px;
+    height: 60px;
+  }
+  
+  .Img1 {
+    height: 35px;
+    width: 150px;
+  }
+  
+  .butdiv1 {
+    display: none; /* Hide buttons on mobile or consider a hamburger menu */
+  }
+  
+  /* Hero Section */
+  .Divland {
+    flex-direction: column;
+    height: auto;
+    padding: 40px 0px;
+    text-align: center;
+  }
+  
+  .Divland1 {
+    padding: 20px;
+  }
+  
+  .Divland1 h1 {
+    font-size: 28px;
+    min-width: auto;
+  }
+  
+  .Divland2 {
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+    /* max-width: 100%; */
+  }
+
+  .Divland3 {
+    flex-direction: row;
+    gap: 20px;
+    top: 0;
+    margin-top: 30px;
+    max-width: 100%;
+  }
+  
+  /* About Section */
+  .about_img {
+    flex-direction: column;
+    padding: 0 20px;
+    gap: 20px;
+  }
+  
+  .about2, .about3 {
+    width: 100%;
+  }
+  
+  .about4 {
+    width: 90%;
+    margin-top: 20px;
+  }
+  
+  .aboutb {
+    position: static;
+    margin: 20px auto;
+  }
+  
+  /* Courses Section */
+  .courses {
+    /* padding: 20px; */
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .card {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 30px;
+  }
+  
+  .cardimg1 {
+    width: 100%;
+    height: auto;
+  }
+  
+  /* Choose Section */
+  .choose {
+    padding: 40px 0px;
+    height: auto;
+    overflow: hidden;
+  }
+  .man2{
+    width: 380px;
+    height: 380px;
+  }
+  .choose3 {
+    flex-direction: column;
+    padding: 0 20px;
+  }
+  
+  .expert {
+    width: 92%;
+  }
+  
+  /* Testimonials */
+  .testimonials1, .testimonials2 {
+    padding: 0 20px;
+  }
+  
+  .testimonials2 {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .testimonials3 {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  /* Subscribe */
+  .subscribe_form {
+    flex-direction: row;
+    width: 90%;
+  }
+  
+  .subscribe_form input {
+    /* width: 100%;
+    border-radius: 30px;
+    margin-bottom: 10px; */
+  }
+  
+  .subscribe_form button {
+    width: 70%;
+    /* border-radius: 30px; */
+  }
+  
+  /* Footer */
+  .footer-container {
+    padding: 0 20px;
+  }
+  
+  .footer {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .footer-section {
+    margin-top: 40px;
+  }
+  
+  .footer-icons {
+    align-items: center;
+  }
+  
+  .footerp {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .line-text {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+  
+  /* General Adjustments */
+  .Buta, .Butb {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+  
+  .explore, .choose1, .testimonials1, .subscribe {
+    padding: 0 20px;
+  }
+  
+  h2, h3 {
+    font-size: 24px !important;
+  }
+  
+  h4 {
+    font-size: 18px !important;
+  }
+  
+  p {
+    font-size: 14px !important;
+  }
 }
