@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react";
 import "../styles/Information.css";
-// import "./RegistrationForm.css";
 import learnxx from "../assets/learnxx.png";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-// import { useDispatch } from "react-redux";
-// import { login } from "../redux/slice/authSlice";
 
 const Information = () => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
+  // Initialize formData with empty values first
   const [formData, setFormData] = useState({
-    firstname: user?.firstname || "",
-    lastname: user?.lastname || "",
-    email: user?.email || "",
+    firstname: "",
+    lastname: "",
+    email: "",
     dayofbirth: "",
     monthofbirth: "",
     yearofbirth: "",
@@ -27,27 +26,56 @@ const Information = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
+  // Properly initialize form data when user loads
   useEffect(() => {
     if (user) {
-      setFormData((prevData) => ({
-        ...prevData,
+      setFormData(prev => ({
+        ...prev,
         firstname: user.firstname || "",
         lastname: user.lastname || "",
-        email: user.email || "",
+        email: user.email || ""
       }));
     }
   }, [user]);
+
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/signin");
+    }
+  }, [isAuthenticated, navigate]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    try {
+      const response = await axios.post(
+        "https://learnx-official-api.onrender.com/api/v1/enroll/signUp",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
+
+      if ([200, 201].includes(response.status)) {
+        navigate("/signin");
+      }
+    } catch (error) {
+      setErrorMessage(error.response?.data?.error || "An error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const options = [
     "frontend",
     "backend",
@@ -56,48 +84,7 @@ const Information = () => {
     "artificial-intelligence",
   ];
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    setLoading(true);
-    try {
-      event.preventDefault();
-      console.log(formData);
-      const response = await axios.post(
-        "https://learnx-official-api.onrender.com/api/v1/enroll/signUp",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json", // Specify JSON format
-            Accept: "application/json", // Ensure JSON response
-          },
-        }
-      );
-      if (response.status === 200 || response.status === 201) {
-        console.log(response.data);
-        // const loginData = response.data;
-        setLoading(false);
-        // dispatch(login(loginData)); // Store in Redux
-        navigate("/signin"); // Redirect to dashboard
-        // navigate("/dashboard");
-      }
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      // console.log(error.response.data.error);
-      setErrorMessage(error.response.data.error);
-      setLoading(false);
-    }
-  };
-
-  console.log(user);
-
-  if (!user) {
-    return <p>Loading user data...</p>;
-  }
-  if(!isAuthenticated) {
-    navigate("/signin")
-  }
+  if (!user) return <p>Loading user data...</p>;
 
   return (
     <div className="form-container">
@@ -106,19 +93,18 @@ const Information = () => {
         <h2>Information Data</h2>
         <p>Complete your registration to get started</p>
       </div>
+
       <form onSubmit={handleSubmit}>
         <div className="formgroup">
           <div className="formgroupfist">
             <label>First Name</label>
             <input
               type="text"
-              disabled
               name="firstname"
-              id="disss"
+              disabled
               placeholder="Enter First Name"
-              value={user?.firstname}
-              // onChange={handleChange}
-              required
+              value={formData.firstname}
+              readOnly // Better than disabled for form submission
             />
           </div>
           <div className="formgroupfist">
@@ -126,37 +112,31 @@ const Information = () => {
             <input
               type="text"
               name="lastname"
-              placeholder="Enter Last Name"
               disabled
-              id="disss2"
-              value={user?.lastname}
-              // onChange={handleChange}
-              required
+              placeholder="Enter Last Name"
+              value={formData.lastname}
+              readOnly
             />
           </div>
           <div className="display_none">
-            <label>Email</label>
             <input
-              type="text"
+              type="hidden"
               name="email"
-              placeholder="Enter email"
-              value={user?.email}
-              // onChange={handleChange}
-              required
+              value={formData.email}
             />
           </div>
         </div>
 
+        {/* Date of Birth Fields - Fixed names */}
         <div className="formgroupsec">
           <div className="groupagecon">
-            <label>Please state your age</label>
+            <label>Date of Birth</label>
             <div className="formgroupage">
-              {/* <label>Please state your age</label> */}
               <input
                 type="text"
                 name="dayofbirth"
                 placeholder="DD"
-                value={formData.day}
+                value={formData.dayofbirth}
                 onChange={handleChange}
                 maxLength="2"
                 required
@@ -165,7 +145,7 @@ const Information = () => {
                 type="text"
                 name="monthofbirth"
                 placeholder="MM"
-                value={formData.month}
+                value={formData.monthofbirth}
                 onChange={handleChange}
                 maxLength="2"
                 required
@@ -173,8 +153,8 @@ const Information = () => {
               <input
                 type="text"
                 name="yearofbirth"
-                placeholder="YY"
-                value={formData.year}
+                placeholder="YYYY"
+                value={formData.yearofbirth}
                 onChange={handleChange}
                 maxLength="4"
                 required
@@ -182,6 +162,7 @@ const Information = () => {
             </div>
           </div>
 
+          {/* Gender Selection */}
           <div className="gendercon">
             <label>Gender</label>
             <div className="formgroupgender">
@@ -193,6 +174,7 @@ const Information = () => {
                     value="male"
                     checked={formData.gender === "male"}
                     onChange={handleChange}
+                    required
                   />
                   Man
                 </label>
@@ -211,11 +193,12 @@ const Information = () => {
           </div>
         </div>
 
+        {/* Contact Information */}
         <div className="formgroup">
           <div className="formgroupfist">
             <label>Mobile Number</label>
             <input
-              type="text"
+              type="tel" // Better for phone numbers
               name="phone"
               placeholder="Enter Mobile Number"
               value={formData.phone}
@@ -236,31 +219,34 @@ const Information = () => {
           </div>
         </div>
 
+        {/* Track Selection */}
         <div>
           <div className="divinfoinput">
             <select
               name="track"
-              className="p-2 border border-gray-300 rounded-lg"
-              value={formData.track} // Ensure the value is bound to state
-              onChange={handleChange} // Handle state update on change
+              value={formData.track}
+              onChange={handleChange}
+              required
             >
-              <option value="" disabled>
-                Select an option
-              </option>
-              {options.map((option, index) => (
-                <option key={index} value={option}>
-                  {option}
+              <option value="" disabled>Select an option</option>
+              {options.map((option) => (
+                <option key={option} value={option}>
+                  {option.split("-").map(word => 
+                    word.charAt(0).toUpperCase() + word.slice(1)
+                  ).join(" ")}
                 </option>
               ))}
             </select>
           </div>
+          
           <div>
-            <button type="submit" className="submitbtninfo">
-              {loading ? "submitting..." : "submit"}
+            <button type="submit" className="submitbtninfo" disabled={loading}>
+              {loading ? "Submitting..." : "Submit"}
             </button>
           </div>
         </div>
-        <span>{errorMessage}</span>
+
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
       </form>
     </div>
   );
