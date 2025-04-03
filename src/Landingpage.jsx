@@ -164,6 +164,7 @@ function Landingpage() {
                 </div>
               </div>
             </div>
+            
             <div className="card_container">
               <div className="card">
                 <img src={frontend} alt="" className="cardimg1" />

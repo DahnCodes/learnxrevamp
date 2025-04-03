@@ -8,41 +8,88 @@ import Learnx from "./assets/Learnx.png";
 import logo from "./assets/logo.png";
 import { LuFacebook, LuInstagram } from "react-icons/lu";
 import { SlSocialLinkedin } from "react-icons/sl";
-import { FaEnvelope } from "react-icons/fa";
+import { FaBars, FaEnvelope, FaTimes } from "react-icons/fa";
+import { useState } from "react";
 // import LearnXF from "./assets/LearnXF.png";
 
 function Layout() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  // const navigate = useNavigate();
   return (
     <div className="Navcon">
-      <div className="header-container">
-        <nav className="Header">
-          <img src={Learnx} alt="" className="Img1" />
+        <div className="header-container">
+      <nav className="Header">
+        <img src={Learnx} alt="LearnX Logo" className="Img1" />
 
+        {/* Desktop Navigation */}
+        <ul className="desktop-nav">
+          <li>
+            <Link to="/about" className="nav_link_top">
+              About Us
+            </Link>
+          </li>
+          <li>
+            <Link to="#" className="nav_link_top">
+              Category
+            </Link>
+          </li>
+          <li>
+            <Link to="#" className="nav_link_top">
+              Testimonial
+            </Link>
+          </li>
+          <li>
+            <Link to="/" className="nav_link_top">
+              FAQs
+            </Link>
+          </li>
+        </ul>
+
+        <div className="butdiv1">
+          <button className="But1" onClick={() => navigate("/signin")}>
+            Login
+          </button>
+          <button className="But2" onClick={() => navigate("/signup")}>
+            Register <FaArrowRightLong />
+          </button>
+        </div>
+
+        {/* Mobile Hamburger Button */}
+        <button className="hamburger" onClick={toggleMenu}>
+          {isMenuOpen ? <FaTimes /> : <FaBars />}
+        </button>
+
+        {/* Mobile Menu */}
+        <div className={`mobile-menu ${isMenuOpen ? 'open' : ''}`}>
           <ul>
             <li>
-              <Link to="/about" className="nav_link_top">
+              <Link to="/about" className="nav_link_top" onClick={toggleMenu}>
                 About Us
               </Link>
             </li>
             <li>
-              <Link to="#" className="nav_link_top">
+              <Link to="#" className="nav_link_top" onClick={toggleMenu}>
                 Category
               </Link>
             </li>
             <li>
-              <Link to="#" className="nav_link_top">
+              <Link to="#" className="nav_link_top" onClick={toggleMenu}>
                 Testimonial
               </Link>
             </li>
             <li>
-              <Link to="/" className="nav_link_top">
+              <Link to="/" className="nav_link_top" onClick={toggleMenu}>
                 FAQs
               </Link>
             </li>
           </ul>
-
-          <div className="butdiv1">
+          <div className="mobile-buttons">
             <button className="But1" onClick={() => navigate("/signin")}>
               Login
             </button>
@@ -50,8 +97,9 @@ function Layout() {
               Register <FaArrowRightLong />
             </button>
           </div>
-        </nav>
-      </div>
+        </div>
+      </nav>
+    </div>
 
       <Outlet />
 
