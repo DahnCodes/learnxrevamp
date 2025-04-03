@@ -1,24 +1,55 @@
 import PropTypes from "prop-types";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/paymentsuccess.css";
 
 const PaymentSuccess = ({ frontendUrl = "/dashboard" }) => {
-    const reference = localStorage.getItem("payment_reference");
+  const navigate = useNavigate();
+  
+  // Get reference from both URL params and localStorage
+  const urlParams = new URLSearchParams(window.location.search);
+  const reference = urlParams.get("reference") || localStorage.getItem("payment_reference");
 
-if (reference) {
-    const apiUrl = `https://learnx-official-api.onrender.com/api/v1/payment/verify/${reference}`;
+  useEffect(() => {
+    const verifyPayment = async () => {
+      if (!reference) {
+        console.error("No payment reference found");
+        navigate("/payment");
+        return;
+      }
 
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            console.log("Payment Verification Data:", data);
-            // Handle the response (update UI, show success message, etc.)
-        })
-        .catch(error => {
-            console.error("Error fetching payment verification:", error);
-        });
-} else {
-    console.error("No payment reference found in local storage.");
-}
+      try {
+        const response = await fetch(
+          `https://learnx-official-api.onrender.com/api/v1/payment/verify/${reference}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        if (data.status === "success") {
+          // Update user payment status
+          const userData = JSON.parse(localStorage.getItem("user"));
+          if (userData) {
+            userData.isPaid = true;
+            localStorage.setItem("user", JSON.stringify(userData));
+          }
+          localStorage.removeItem("payment_reference");
+        } else {
+          navigate("/payment");
+        }
+      } catch (error) {
+        console.error("Verification failed:", error);
+        navigate("/payment");
+      }
+    };
+
+    verifyPayment();
+  }, [reference, navigate]);
+
   return (
     <div className="payment-container">
       <h2>Payment was successful! 🎉</h2>
@@ -32,9 +63,8 @@ if (reference) {
   );
 };
 
-// Add PropTypes validation
 PaymentSuccess.propTypes = {
-  frontendUrl: PropTypes.string, // Ensures frontendUrl is a string
+  frontendUrl: PropTypes.string,
 };
 
 export default PaymentSuccess;

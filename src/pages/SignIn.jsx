@@ -43,6 +43,8 @@ const SignIn = () => {
         setLoading(false);
         dispatch(login(loginData)); // Store in Redux
 
+        localStorage.setItem("user", JSON.stringify(loginData.user));
+        localStorage.setItem("token", loginData.token);
 
         if (loginData.user.isPaid === false) {
           navigate("/payment");
