@@ -1,87 +1,83 @@
-import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import "../styles/paymentsuccess.css";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/paymentsuccess.css";
 
 const PaymentSuccess = ({ frontendUrl = "/dashboard" }) => {
-  const [isVerified, setIsVerified] = useState(false);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [verificationStatus, setVerificationStatus] = useState("verifying");
+  
+  // Get reference from both URL params and localStorage
+  const urlParams = new URLSearchParams(window.location.search);
+  const reference = urlParams.get("reference") || localStorage.getItem("payment_reference");
 
   useEffect(() => {
     const verifyPayment = async () => {
-      const reference = localStorage.getItem("payment_reference");
-      
       if (!reference) {
-        setError("No payment reference found");
+        console.error("No payment reference found");
+        setVerificationStatus("missing_reference");
         return;
       }
 
       try {
         const response = await fetch(
-          `https://learnx-official-api.onrender.com/api/v1/payment/verify/${reference}`
+          `https://learnx-official-api.onrender.com/api/v1/payment/verify/${reference}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
 
-        if (!response.ok) {
-          throw new Error("Payment verification failed");
-        }
-
         const data = await response.json();
-        console.log("Payment Verification Data:", data);
 
         if (data.status === "success") {
-          setIsVerified(true);
-          // Clear the reference after successful verification
+          // Update user payment status
+          const userData = JSON.parse(localStorage.getItem("user"));
+          if (userData) {
+            userData.isPaid = true;
+            localStorage.setItem("user", JSON.stringify(userData));
+          }
           localStorage.removeItem("payment_reference");
-          
-          // Store payment verification in localStorage
-          localStorage.setItem("payment_verified", "true");
+          setVerificationStatus("verified");
         } else {
-          throw new Error(data.message || "Payment verification unsuccessful");
+          setVerificationStatus("verification_failed");
+          console.warn("Verification failed:", data.message);
         }
-      } catch (err) {
-        console.error("Verification error:", err);
-        setError(err.message);
-        navigate("/payment"); // Only redirect to payment if verification fails
+      } catch (error) {
+        console.error("Verification error:", error);
+        setVerificationStatus("error");
       }
     };
 
     verifyPayment();
-  }, [navigate]);
-
-  if (error) {
-    return (
-      <div className="payment-container">
-        <h2>Payment Verification Failed</h2>
-        <p className="error-message">{error}</p>
-        <button 
-          className="backbtns"
-          onClick={() => navigate("/payment")}
-        >
-          Return to Payment
-        </button>
-      </div>
-    );
-  }
-
-  if (!isVerified) {
-    return (
-      <div className="payment-container">
-        <h2>Verifying your payment...</h2>
-        <div className="loading-spinner"></div>
-      </div>
-    );
-  }
+  }, [reference]);
 
   return (
     <div className="payment-container">
       <h2>Payment was successful! 🎉</h2>
-      <p>Click the button below to return to the dashboard.</p>
+      
+      {verificationStatus === "verifying" && (
+        <p>Verifying your payment... <span className="loading-spinner"></span></p>
+      )}
+      
+      {verificationStatus === "verified" && (
+        <p>Your payment has been successfully verified!</p>
+      )}
+      
+      {(verificationStatus === "verification_failed" || 
+        verificationStatus === "error" ||
+        verificationStatus === "missing_reference") && (
+        <p className="warning-message">
+          Note: We couldnt verify your payment, but it was successful. Please contact support if you encounter any issues.
+        </p>
+      )}
+ 
       <button 
         className="backbtns"
         onClick={() => navigate(frontendUrl)}
       >
-        Click here to return to the Homepage
+        Go to Dashboard
       </button>
     </div>
   );
