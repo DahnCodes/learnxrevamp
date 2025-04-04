@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/paymentsuccess.css";
 
 const PaymentSuccess = ({ frontendUrl = "/dashboard" }) => {
   const navigate = useNavigate();
+  const [verificationStatus, setVerificationStatus] = useState("verifying");
   
   // Get reference from both URL params and localStorage
   const urlParams = new URLSearchParams(window.location.search);
@@ -14,7 +15,7 @@ const PaymentSuccess = ({ frontendUrl = "/dashboard" }) => {
     const verifyPayment = async () => {
       if (!reference) {
         console.error("No payment reference found");
-        navigate("/payment");
+        setVerificationStatus("missing_reference");
         return;
       }
 
@@ -38,27 +39,46 @@ const PaymentSuccess = ({ frontendUrl = "/dashboard" }) => {
             localStorage.setItem("user", JSON.stringify(userData));
           }
           localStorage.removeItem("payment_reference");
+          setVerificationStatus("verified");
         } else {
-          navigate("/payment");
+          setVerificationStatus("verification_failed");
+          console.warn("Verification failed:", data.message);
         }
       } catch (error) {
-        console.error("Verification failed:", error);
-        navigate("/payment");
+        console.error("Verification error:", error);
+        setVerificationStatus("error");
       }
     };
 
     verifyPayment();
-  }, [reference, navigate]);
+  }, [reference]);
 
   return (
     <div className="payment-container">
       <h2>Payment was successful! 🎉</h2>
-      <p>Click the button below to return to the dashboard.</p>
-      <a href={frontendUrl} rel="noreferrer noopener">
-        <button className="backbtns">
-          Click here to return to the Homepage
-        </button>
-      </a>
+      
+      {verificationStatus === "verifying" && (
+        <p>Verifying your payment... <span className="loading-spinner"></span></p>
+      )}
+      
+      {verificationStatus === "verified" && (
+        <p>Your payment has been successfully verified!</p>
+      )}
+      
+      {(verificationStatus === "verification_failed" || 
+        verificationStatus === "error" ||
+        verificationStatus === "missing_reference") && (
+        <p className="warning-message">
+          Note: We couldnt verify your payment, but it was successful. Please contact support if you encounter any issues.
+        </p>
+      )}
+
+      <button 
+        className="backbtns"
+        onClick={() => navigate(frontendUrl)}
+      >
+        Go to Dashboard
+      </button>
     </div>
   );
 };
