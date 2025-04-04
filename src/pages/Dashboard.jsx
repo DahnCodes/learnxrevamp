@@ -15,26 +15,25 @@ import { CgScreen } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
 import Week3Courses from "../components/Week3Courses";
 import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 const Dashboard = () => {
   // const [value, setvalue] = useState(new Date());
   // const [date, setDate] = useState(new Date(2025, 2, 14)); // Default to 14th March 2025
-
+  const [currentTrack, setCurrentTrack] = useState("Your Course");
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-  
-  const selectedTrack = localStorage.getItem("selected_course_track");
-  
-
   const navigate = useNavigate();
-  
-  if(!isAuthenticated) {
-    navigate("/signin");
-  }
 
-  
-  // Function to format track name for display
-  const formatTrackName = (track) => {
-    if (!track) return "Your Course";
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/signin");
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Format track name for display
+  useEffect(() => {
+    const selectedTrack = localStorage.getItem("selected_course_track");
     
     const trackNames = {
       frontend: "Frontend Development",
@@ -43,16 +42,16 @@ const Dashboard = () => {
       uiux: "UI/UX Design",
       machine: "AI and Machine Learning"
     };
-    
-    return trackNames[track] || "Your Course";
-  };
 
-  const currentTrack = formatTrackName(selectedTrack);
+    setCurrentTrack(
+      selectedTrack ? trackNames[selectedTrack] || "Your Course" : "Your Course"
+    );
+  }, []);
   return (
     <>
       <div className="dashboardfist">
         <div className="dashboardsec">
-          <h3>Hi, {user?.firstname} ({selectedTrack ? selectedTrack.toUpperCase() : 'PD'})</h3>
+          <h3>Hi, {user?.firstname} ({currentTrack.split(" ").map(word => word[0]).join('')})</h3>
 
           <div className="dashboardflex">
             <div className="dashcard">

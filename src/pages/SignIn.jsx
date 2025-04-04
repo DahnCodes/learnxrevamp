@@ -47,6 +47,10 @@ const SignIn = () => {
         localStorage.setItem("user", JSON.stringify(loginData.user));
         localStorage.setItem("token", loginData.token);
 
+        if (loginData.user.track) {
+          localStorage.setItem("selected_course_track", loginData.user.track);
+        }
+
         if (loginData.user.isPaid === false) {
           navigate("/payment");
         } else {
