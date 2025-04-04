@@ -67,9 +67,7 @@ const Information = () => {
       );
 
       if ([200, 201].includes(response.status)) {
-              // Show success toast notification
-              window.alert("Signup successful! Please login to continue");
-  navigate("/");
+        navigate("/signin");
       }
     } catch (error) {
       setErrorMessage(error.response?.data?.error || "An error occurred");
