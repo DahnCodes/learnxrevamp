@@ -174,3 +174,80 @@
   .display_none{
     display: none;
   }
+
+  @media (max-width: 425px) {
+    /* Form Container */
+    .form-container {
+      margin: 20px auto;
+      padding: 30px 20px;
+      width: 90%;
+    }
+  
+    /* Logo */
+    .form-logo {
+      width: 40px;
+      top: -20px;
+    }
+  
+    /* Header */
+    .form-header h2 {
+      font-size: 20px;
+    }
+  
+    /* Form Groups */
+    .formgroup {
+      flex-direction: column;
+      gap: 15px;
+    }
+  
+    .formgroupfist,
+    .formgroupsec {
+      width: 100%;
+    }
+  
+    .formgroupfist input,
+    .formgroupgender,
+    .divinfoinput select {
+      width: 100%;
+    }
+  
+    .formgroupage {
+      flex-direction: column;
+      gap: 15px;
+    }
+  
+    .formgroupage input {
+      width: 100%;
+    }
+  
+    .genderoptions {
+      padding: 5px;
+    }
+  
+    /* Submit Button */
+    .submitbtninfo {
+      position: relative;
+      right: auto;
+      width: 100%;
+      margin-top: 30px;
+    }
+  
+    /* Info Divs */
+    .divinfoinput {
+      padding: 20px 0;
+      justify-content: center;
+    }
+  
+    /* Labels */
+    .formgroupfist label,
+    .gendercon label,
+    .groupagecon label {
+      font-size: 14px;
+    }
+  
+    /* Special IDs */
+    #disss,
+    #disss2 {
+      font-size: 12px;
+    }
+  }
