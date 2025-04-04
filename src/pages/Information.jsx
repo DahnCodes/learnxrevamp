@@ -41,7 +41,8 @@ const Information = () => {
   // Redirect if not authenticated
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate("/signin");
+      window.alert("Signup successful! Please login to continue");
+      navigate("/");
     }
   }, [isAuthenticated, navigate]);
 

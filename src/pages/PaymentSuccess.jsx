@@ -42,7 +42,7 @@ const PaymentSuccess = ({ frontendUrl = "/dashboard" }) => {
       } catch (err) {
         console.error("Verification error:", err);
         setError(err.message);
-        navigate("/payment"); // Only redirect to payment if verification fails
+        // Removed the navigate("/payment") call here
       }
     };
 
@@ -59,6 +59,13 @@ const PaymentSuccess = ({ frontendUrl = "/dashboard" }) => {
           onClick={() => navigate("/payment")}
         >
           Return to Payment
+        </button>
+        <button 
+          className="backbtns"
+          onClick={() => navigate(frontendUrl)}
+          style={{ marginTop: "10px" }}
+        >
+          Go to Dashboard
         </button>
       </div>
     );
