@@ -11,6 +11,7 @@ const PaymentSuccess = ({ frontendUrl = "/dashboard" }) => {
   useEffect(() => {
     const verifyPayment = async () => {
       const reference = localStorage.getItem("payment_reference");
+      const token = localStorage.getItem("token");
       
       if (!reference) {
         setVerificationError("Payment reference missing");
@@ -20,8 +21,16 @@ const PaymentSuccess = ({ frontendUrl = "/dashboard" }) => {
 
       try {
         const response = await fetch(
-          `https://learnx-official-api.onrender.com/api/v1/payment/verify/${reference}`
+          `https://learnx-official-api.onrender.com/api/v1/payment/verify/${reference}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}` // Add authorization header
+            }
+          }
         );
+
 
         const data = await response.json();
         console.log("Verification response:", data);
