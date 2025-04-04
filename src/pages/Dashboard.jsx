@@ -187,7 +187,7 @@ const Dashboard = () => {
             <div className="taskdead">
               <h5>
                 Task Submission Deadline <br />
-                (Wk1)
+                (Wk2)
               </h5>
 
               <div>
