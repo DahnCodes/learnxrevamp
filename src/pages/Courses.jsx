@@ -1,137 +1,161 @@
-import { useEffect, useState } from "react";
-// import courseimg from "../assets/courseimg.png";
-// import Group130 from "../assets/Group130.png";
-// import Coursesdash from "../styles/Coursesdash.css";
-import "../styles/Newcourse.css";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const Courses = () => {
-  
+const CoursePage = () => {
   const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [currentWeek, setCurrentWeek] = useState('Week 1');
   const [activePlayer, setActivePlayer] = useState(null);
-  const [error, setError] = useState(null);
+  const [fullscreenPdf, setFullscreenPdf] = useState(false);
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
         const userToken = localStorage.getItem("userToken");
-        const response = await fetch("https://learnx-official-api.onrender.com/api/v1/course/CourseForTrack", {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${userToken}`,
-          },
-        });
+        if (!userToken) {
+          throw new Error("No authentication token found");
+        }
 
-        if (!response.ok) throw new Error("Failed to fetch courses");
+        const response = await axios.get(
+          "https://learnx-official-api.onrender.com/api/v1/course/CourseForTrack",
+          {
+            headers: {
+              'Authorization': `Bearer ${userToken}`,
+            },
+          }
+        );
 
-        const data = await response.json();
-        console.log("Fetched Courses Data:", data);
-
-        setCourses(data.allCourses || []);
-        if (data.allCourses?.length > 0) {
-          setCurrentWeek(`Week ${data.allCourses[0].week || '1'}`);
+        if (response.data && response.data.allCourses) {
+          setCourses(response.data.allCourses);
+          if (response.data.allCourses.length > 0) {
+            setCurrentWeek(`Week ${response.data.allCourses[0].week || '1'}`);
+          }
+        } else {
+          throw new Error("Invalid course data structure");
         }
       } catch (err) {
         console.error("Error fetching courses:", err);
-        setError("Failed to load courses. Please try again later.");
+        setError(err.message || "Failed to load courses");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchCourses();
   }, []);
 
-  const togglePlayer = (index, link) => {
+  const toggleCoursePlayer = (index) => {
     setActivePlayer(activePlayer === index ? null : index);
   };
 
-  const renderPlayerContent = (link) => {
-    if (!link) return <p>No content available</p>;
+  const toggleFullscreen = () => {
+    setFullscreenPdf(!fullscreenPdf);
+    if (!fullscreenPdf) {
+      document.documentElement.requestFullscreen().catch(err => {
+        console.error("Error attempting to enable fullscreen:", err);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  };
 
-    // PDF files
-    if (link.endsWith(".pdf")) {
+  const renderCourseContent = (course, index) => {
+    if (activePlayer !== index) return null;
+
+    const embedStyle = {
+      width: '100%',
+      height: '100%',
+      borderRadius: '8px'
+    };
+
+    if (course.Link?.endsWith(".pdf")) {
       return (
-        <div className="pdf-container">
+        <div className={`pdf-container ${fullscreenPdf ? 'fullscreen-pdf' : ''}`} 
+             style={{ position: 'relative', width: '100%', height: '500px' }}>
           <embed 
-            src={link} 
+            src={course.Link} 
             type="application/pdf" 
-            className="pdf-viewer" 
+            style={{ ...embedStyle, overflow: 'auto' }} 
           />
           <button 
-            onClick={() => {
-              const container = document.querySelector('.pdf-container');
-              if (container?.requestFullscreen) container.requestFullscreen();
-            }}
-            className="fullscreen-button"
+            onClick={toggleFullscreen}
+            style={{ position: 'absolute', top: '10px', right: '10px', 
+                    padding: '8px 12px', background: 'black', 
+                    color: 'white', border: 'none', cursor: 'pointer' }}
           >
-            Fullscreen
+            {fullscreenPdf ? 'Exit Fullscreen' : 'Fullscreen'}
           </button>
         </div>
       );
     }
-    
-    // YouTube videos
-    if (link.includes("youtube.com") || link.includes("youtu.be")) {
-      const videoId = link.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)?.[1];
+
+    if (course.Link?.includes("youtube.com") || course.Link?.includes("youtu.be")) {
+      const videoId = course.Link.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)?.[1];
       return videoId ? (
         <iframe 
+          style={embedStyle}
           src={`https://www.youtube.com/embed/${videoId}`}
           frameBorder="0"
           allowFullScreen
-          className="video-iframe"
+          title="YouTube video player"
         />
       ) : (
-        <p className="error-message">Invalid YouTube link</p>
+        <p style={{ color: 'red' }}>Invalid YouTube link</p>
       );
     }
 
-    // Video files
-    if (link.match(/\.(mp4|mov|mkv)$/)) {
+    if (course.Link?.match(/\.(mp4|mov|mkv)$/)) {
       return (
-        <video controls className="video-player">
-          <source src={link} type="video/mp4" />
+        <video controls style={embedStyle}>
+          <source src={course.Link} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       );
     }
 
-    // Word documents
-    if (link.endsWith(".docx")) {
+    if (course.Link?.endsWith(".docx")) {
       return (
         <iframe 
-          src={`https://docs.google.com/gview?url=${link}&embedded=true`}
+          src={`https://docs.google.com/gview?url=${course.Link}&embedded=true`}
+          style={embedStyle}
           frameBorder="0"
-          className="doc-iframe"
+          title="Word document viewer"
         />
       );
     }
 
-    // Default case
     return (
       <iframe 
-        src={link}
+        src={course.Link}
+        style={embedStyle}
         frameBorder="0"
-        className="generic-iframe"
+        title="Course content"
       />
     );
   };
 
+  if (loading) {
+    return <div className="loading-message">Loading courses...</div>;
+  }
+
   if (error) {
-    return <div className="error-container">{error}</div>;
+    return <div className="error-message">Error: {error}</div>;
   }
 
   return (
-    <div className="courses-page">
+    <div className="course-page">
       <h1>Available Courses</h1>
       <div className="current-week">{currentWeek}</div>
       
       <div className="course-container">
-        {courses.map((course, index) => (
-          <div 
-            key={index} 
-            className={`course-card ${activePlayer === index ? 'expanded' : ''}`}
-          >
-            {activePlayer !== index ? (
-              <div className="course-info">
+        {courses.length > 0 ? (
+          courses.map((course, index) => (
+            <div 
+              key={index} 
+              className={`course-card ${activePlayer === index ? 'active' : ''}`}
+            >
+              <div className="course-info" style={{ display: activePlayer === index ? 'none' : 'block' }}>
                 <img 
                   src={course.image || 'placeholder.jpg'} 
                   alt="Course Thumbnail" 
@@ -142,27 +166,23 @@ const Courses = () => {
                 <p>Weekly Task: {course.weeklyTask || 'No task provided'}</p>
                 <button 
                   className="view-course"
-                  onClick={() => togglePlayer(index, course.Link)}
+                  onClick={() => toggleCoursePlayer(index)}
                 >
-                  View Course
+                  {activePlayer === index ? 'Hide Course' : 'View Course'}
                 </button>
               </div>
-            ) : (
-              <div className="course-player">
-                {renderPlayerContent(course.Link)}
-                <button 
-                  className="close-player"
-                  onClick={() => togglePlayer(null)}
-                >
-                  Close
-                </button>
+              
+              <div className="course-player" style={{ display: activePlayer === index ? 'block' : 'none' }}>
+                {renderCourseContent(course, index)}
               </div>
-            )}
-          </div>
-        ))}
+            </div>
+          ))
+        ) : (
+          <p>No courses available</p>
+        )}
       </div>
     </div>
   );
 };
 
-export default Courses;
+export default CoursePage;
