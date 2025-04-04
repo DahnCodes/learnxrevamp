@@ -50,7 +50,7 @@ const SignIn = () => {
         if (loginData.user.track) {
           localStorage.setItem("selected_course_track", loginData.user.track);
         }
-
+        console.log("Track from backend:", loginData.user.track);
         if (loginData.user.isPaid === false) {
           navigate("/payment");
         } else {
