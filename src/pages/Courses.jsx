@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const CoursePage = () => {
@@ -12,8 +12,9 @@ const CoursePage = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const userToken = localStorage.getItem("token");
-        if (!userToken) {
+        const token = localStorage.getItem("token");
+        
+        if (!token) {
           throw new Error("No authentication token found");
         }
 
@@ -21,7 +22,7 @@ const CoursePage = () => {
           "https://learnx-official-api.onrender.com/api/v1/course/CourseForTrack",
           {
             headers: {
-              'Authorization': `Bearer ${userToken}`,
+              'Authorization': `Bearer ${token}`,
             },
           }
         );
