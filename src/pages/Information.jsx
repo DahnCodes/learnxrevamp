@@ -67,7 +67,14 @@ const Information = () => {
       );
 
       if ([200, 201].includes(response.status)) {
-        navigate("/signin");
+              // Show success toast notification
+              window.alert("Signup successful! Please login to continue");
+  navigate("/");
+              
+              // Redirect to homepage after 3 seconds
+              setTimeout(() => {
+                navigate("/");
+              }, 2000)
       }
     } catch (error) {
       setErrorMessage(error.response?.data?.error || "An error occurred");
