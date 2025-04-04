@@ -252,8 +252,195 @@
     left: 10px;
     top: 10px;
 }
+/* Mobile Header */
+.mobile-header {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #133A25;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  .hamburger-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+  }
+  
+  .mobile-logo img {
+    height: 25px;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    * {
+      overflow-x: hidden;
+    }
+    
+    .dashlayout_container {
+      display: block;
+      height: auto;
+      height: -100vh;
+    }
+  
+    .mobile-header {
+      display: flex;
+      position: relative; /* Changed from fixed */
+      width: 100%;
+      background-color: #133A25;
+      z-index: 1000;
+    }
+  
+    .Sidebar1 {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 270px;
+      height: 100vh;
+      z-index: 1001;
+      transform: translateX(-100%);
+      overflow-y: auto;
+      transition: transform 0.3s ease;
+    }
+  
+    .Sidebar1.open {
+      transform: translateX(0);
+    }
+  
+    .maindash {
+      width: 100%;
+      overflow-y: auto;
+      position: relative;
+      z-index: 1;
+    }
+  
+    /* Remove the overlay pseudo-element */
+    .maindash.menu-open::after {
+      content: none;
+    }
+  
+    /* When menu is open, prevent body scrolling */
+    body.menu-open {
+      overflow: hidden;
+    }
+  }
+ 
 
-
+@media (max-width: 425px) {
+    /* Main container adjustments */
+    .dashlayout_container {
+      flex-direction: column;
+      height: auto;
+      overflow: visible;
+    }
+  
+    /* Sidebar adjustments */
+    .Sidebar1 {
+      width: 100%;
+      height: auto;
+      padding: 10px;
+      position: relative;
+    }
+  
+    /* Top section adjustments */
+    .Top1a {
+      flex-direction: column;
+      align-items: center;
+      padding-top: 10px;
+      gap: 10px;
+    }
+  
+    .Top1b {
+      flex-direction: column;
+      gap: 5px;
+      text-align: center;
+    }
+  
+    .Top1c input {
+      width: 100%;
+      max-width: 300px;
+    }
+  
+    .searchimg {
+      left: 15px;
+      top: 8px;
+    }
+  
+    /* Navigation menu adjustments */
+    .Middle1 {
+      padding: 10px 5px;
+    }
+  
+    .Middle1 li {
+      padding: 8px 5px;
+      font-size: medium;
+    }
+  
+    .Middle1 li .linkTag {
+      column-gap: 5px;
+      padding: 3px;
+    }
+  
+    /* Bottom menu adjustments */
+    .Bottom1 {
+      padding: 10px 5px;
+    }
+  
+    .Bottom1 li {
+      padding: 8px 5px;
+      font-size: medium;
+    }
+  
+    /* Main content area adjustments */
+    .maindash {
+      width: 100%;
+      overflow: visible;
+    }
+  
+    /* Header adjustments */
+    .headerdash {
+      height: auto;
+      padding: 10px;
+    }
+  
+    .navinputdash {
+      flex-direction: column;
+      height: auto;
+      gap: 15px;
+      padding: 10px;
+    }
+  
+    .searchdash1 {
+      width: 100%;
+    }
+  
+    .searchdash1 input {
+      width: 100%;
+      max-width: 300px;
+    }
+  
+    .notificationdash {
+      justify-content: center;
+      width: 100%;
+    }
+  
+    /* Hide non-essential elements if needed */
+    .topimg, .imgtopb {
+      height: 16px;
+    }
+  
+    /* Active/hover states */
+    .Middle1 li .linkTag.selected,
+    .Middle1 li .linkTag:hover,
+    .Bottom1 li:hover {
+      width: 100%;
+      border-left: 2px solid #FF7B00;
+    }
+  }
 
 
 

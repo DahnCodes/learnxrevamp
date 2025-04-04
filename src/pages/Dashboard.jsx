@@ -110,19 +110,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="communitydiv">
-            <div>
-              <p>Join Our LearnX Community</p>
-              <hr />
-            </div>
-            <div>
-              <p>Join Our community and interact with other LearnX interns</p>
-            </div>
-            <div>
-              <button className="communitybut">Coming Soon</button>
-            </div>
-          </div>
-
           <div className="dashcourse">
             <div className="courz_container">
               <Week3Courses />
@@ -156,6 +143,19 @@ const Dashboard = () => {
                   </Link>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div className="communitydiv">
+            <div>
+              <p>Join Our LearnX Community</p>
+              <hr />
+            </div>
+            <div>
+              <p>Join Our community and interact with other LearnX interns</p>
+            </div>
+            <div>
+              <button className="communitybut">Coming Soon</button>
             </div>
           </div>
         </div>

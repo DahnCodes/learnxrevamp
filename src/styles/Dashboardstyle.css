@@ -44,8 +44,8 @@
 }
 
 .dashcard{
-    width: 150px;
-    height: 100.48px;
+    width: 180px;
+    height: 161.48px;
     /* border: 1px solid black; */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -84,8 +84,8 @@
 }
 
 .dashcard1{
-    width: 150px;
-    height: 100.48px;
+    width: 180px;
+    height: 161.48px;
     /* border: 1px solid black; */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -126,9 +126,9 @@
 }
 
 .dashcard2{
-    width: 150px;
+    width: 180px;
+    height: 161.48px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    height: 100.48px;
     /* border: 1px solid black; */
     padding: 20px;
     display: flex;
@@ -262,13 +262,13 @@
     /* border: 1px solid black; */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     /* padding-bottom: 40px; */
-    height: 300px;
+    height: 257px;
     display: flex;
     flex-direction: column;
     padding: 15px 20px;
     row-gap: 15px;
     border-radius: 10px;
-    margin-top: 20px;
+    /* margin-top: 20px; */
     grid-column: span 1;
 
 }
@@ -341,4 +341,95 @@
     border-radius: 0px 20px 20px 0px ;
     border: 1px solid #FF7B00;
 }
-
+@media (max-width: 425px) {
+    .dashboardfist {
+      grid-template-columns: 1fr;
+      padding: 0 10px;
+    }
+  
+    .dashboardsec {
+      grid-column: span 1;
+      padding: 0;
+    }
+  
+    .calenderdiv {
+      grid-column: span 1;
+      margin-top: 20px;
+      padding: 15px;
+      row-gap: 20px;
+    }
+  
+    .dashboardflex {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+  
+    .dashcard,
+    .dashcard1,
+    .dashcard2 {
+      width: 100%;
+      height: auto;
+      padding: 15px;
+    }
+  
+    .dashcarddiv22 {
+      gap: 20px;
+    }
+  
+    .communitydiv {
+      padding: 15px 10px;
+      row-gap: 15px;
+    }
+  
+    .communitybut {
+      width: 100%;
+    }
+  
+    .dashcourse {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+  
+    .dashtopic {
+      height: auto;
+      padding: 15px;
+    }
+  
+    .dateandt,
+    .taskdead,
+    .subtask {
+      padding: 0 10px;
+    }
+  
+    .subtask2 input {
+      width: 60%;
+    }
+  
+    .subtask2 button {
+      width: 40%;
+      padding: 0 10px;
+    }
+  
+    .calle {
+      width: 100%;
+    }
+  
+    .dashp1 {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  
+    .certimg {
+      width: 80px;
+    }
+  
+    .dashtopic2 {
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-start;
+    }
+  
+    .linktopic {
+      margin-top: 10px;
+    }
+  }

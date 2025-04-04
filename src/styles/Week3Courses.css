@@ -2,7 +2,7 @@
 .courses-container {
     /* max-width: 400px; */
     background: white;
-    /* height: 100px; */
+    /* height: 257px; */
     padding: 5px;
     border-radius: 9px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -19,7 +19,7 @@
   /* Course Content Layout */
   .course-content {
     width: 100%;
-    /* height: 100px; */
+    height: 257px;
     /* border: 1px solid blue; */
     /* display: flex; */
     /* justify-content: space-between; */

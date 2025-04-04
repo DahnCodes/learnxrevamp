@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import Learnx from "./assets/Learnx.png";
 import Userx from "./assets/Userx.png";
@@ -15,100 +16,110 @@ import { IoIosNotifications } from "react-icons/io";
 import { IoMdPerson } from "react-icons/io";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { useSelector } from "react-redux";
-
+import { FaBars, FaTimes } from "react-icons/fa";
 
 const DashboardLayout = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-
   const navigate = useNavigate();
   
   if(!isAuthenticated) {
     navigate("/signin");
   }
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
     <div className="dashlayout_container">
-      <aside className="Sidebar1">
+      {/* Mobile Header */}
+      <div className="mobile-header">
+        <button className="hamburger-btn" onClick={toggleMenu}>
+          {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+        </button>
+        <div className="mobile-logo">
+          <img src={Learnx} alt="LearnX Logo" className="topimg" />
+        </div>
+      </div>
+
+      {/* Sidebar */}
+      <aside className={`Sidebar1 ${isMenuOpen ? 'open' : ''}`}>
         <div className="TOP1">
           <div className="Top1a">
-            <img src={Learnx} alt="" className="topimg" />
-            <img src={Userx} alt="" className="topimg" />
+            <img src={Learnx} alt="LearnX Logo" className="topimg" />
+            <img src={Userx} alt="UserX Logo" className="topimg" />
           </div>
           <div className="Top1b">
-            <img src={profile} alt="" className="imgtopb" />
+            <img src={profile} alt="Profile" className="imgtopb" />
             <div className="Top1b__text">
-              <h4> {user?.firstname} phd</h4>
+              <h4>{user?.firstname} {user?.track?.toUpperCase() || 'PD'}</h4>
               <p>{user?.email}</p>
             </div>
           </div>
           <div className="Top1c">
-            <input type="text" placeholder="search" />
+            <input type="text" placeholder="Search" />
             <CiSearch className="searchimg" />
           </div>
         </div>
+        
         <div className="Middle1">
           <ul>
-            <li>
-            <Link to={"/dashboard"}className={`linkTag ${location.pathname === "/dashboard" ? "selected" : ""}`}>
+            <li onClick={closeMenu}>
+              <Link to="/dashboard" className={`linkTag ${location.pathname === "/dashboard" ? "selected" : ""}`}>
                 <MdSpaceDashboard /> Dashboard
               </Link>
-              
             </li>
-            <li>
-            <Link to={"/courses"}className={`linkTag ${location.pathname === "/courses" ? "selected" : ""}`}>
-            <IoBookSharp /> My Courses
+            <li onClick={closeMenu}>
+              <Link to="/courses" className={`linkTag ${location.pathname === "/courses" ? "selected" : ""}`}>
+                <IoBookSharp /> My Courses
               </Link>
-              
             </li>
-            <li>
-            <Link to={"/mentors"}className={`linkTag ${location.pathname === "/mentors" ? "selected" : ""}`}>
-            <IoPersonAddSharp /> Mentors
+            <li onClick={closeMenu}>
+              <Link to="/mentors" className={`linkTag ${location.pathname === "/mentors" ? "selected" : ""}`}>
+                <IoPersonAddSharp /> Mentors
               </Link>
-              
             </li>
-            <li>
-            <Link to={"/paymentModal"}className={`linkTag ${location.pathname === "/paymentModal" ? "selected" : ""}`}>
-            <MdOutlinePayment /> Payments
+            <li onClick={closeMenu}>
+              <Link to="/paymentModal" className={`linkTag ${location.pathname === "/paymentModal" ? "selected" : ""}`}>
+                <MdOutlinePayment /> Payments
               </Link>
-              
-
-              
             </li>
-            <li>
-
-            <Link to={"/Certificate"}className={`linkTag ${location.pathname === "/Certificate" ? "selected" : ""}`}>
-            <PiCertificateFill /> Certification
+            <li onClick={closeMenu}>
+              <Link to="/Certificate" className={`linkTag ${location.pathname === "/Certificate" ? "selected" : ""}`}>
+                <PiCertificateFill /> Certification
               </Link>
-              
-             
             </li>
-            <li>
-            <Link to={"/"}className={`linkTag ${location.pathname === "/" ? "selected" : ""}`}>
-            <LuPhoneCall />
-              Supports
-            
+            <li onClick={closeMenu}>
+              <Link to="/" className={`linkTag ${location.pathname === "/" ? "selected" : ""}`}>
+                <LuPhoneCall /> Support
               </Link>
-              
             </li>
           </ul>
         </div>
+        
         <div className="Bottom1">
           <ul>
-            <li>
-              <TbLogout2 />
-              logout
+            <li onClick={closeMenu}>
+              <TbLogout2 /> Logout
             </li>
           </ul>
         </div>
       </aside>
-      <div className="maindash">
+
+      {/* Main Content */}
+      <div className={`maindash ${isMenuOpen ? 'menu-open' : ''}`}>
         <header className="headerdash">
           <nav className="navinputdash">
             <div className="searchdash1">
-              <input type="text" placeholder="search" />
+              <input type="text" placeholder="Search" />
               <CiSearch className="searchicon"/>
             </div>
-
             <div className="notificationdash">
               <IoIosNotifications />
               <IoMdPerson />
