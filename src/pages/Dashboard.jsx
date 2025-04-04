@@ -121,7 +121,7 @@ const Dashboard = () => {
                 <hr />
               </div>
               <div>
-                <h3>Lesson 03: Ideation</h3>
+                <h3>Lesson 01: Ideation</h3>
                 <p>
                   This course is highly interactive with project checklist ,
                   built to make it exciting and innovating.
@@ -187,7 +187,7 @@ const Dashboard = () => {
             <div className="taskdead">
               <h5>
                 Task Submission Deadline <br />
-                (Wk3)
+                (Wk1)
               </h5>
 
               <div>
