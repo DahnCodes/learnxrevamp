@@ -47,10 +47,15 @@ const SignIn = () => {
         localStorage.setItem("user", JSON.stringify(loginData.user));
         localStorage.setItem("token", loginData.token);
 
-        if (loginData.user.track) {
-          localStorage.setItem("selected_course_track", loginData.user.track);
-        }
-        console.log("Track from backend:", loginData.user.track);
+         // Handle track data more robustly
+         const userTrack = loginData.user?.track || "not tracked";
+         if (loginData.user?.track) {
+           localStorage.setItem("selected_course_track", userTrack);
+         }
+   
+         // Debug logging - after state is updated
+         console.log("User data:", loginData.user);
+         console.log("Track from backend:", userTrack);
         if (loginData.user.isPaid === false) {
           navigate("/payment");
         } else {
