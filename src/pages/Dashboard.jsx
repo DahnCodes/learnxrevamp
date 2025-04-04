@@ -36,8 +36,8 @@ const Dashboard = () => {
     const selectedTrack = localStorage.getItem("selected_course_track");
     
     const trackNames = {
-      frontend: "Frontend Development",
-      backend: "Backend Development",
+      frontend: "frontend",
+      backend: "backend",
       design: "Product Design",
       uiux: "UI/UX Design",
       machine: "AI and Machine Learning"
