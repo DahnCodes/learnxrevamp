@@ -86,7 +86,7 @@ const Dashboard = () => {
 
               <div className="meantorptag">
                 <p className="ppp">3</p>
-                <p>Design Mentors</p>
+                <p>Assign Mentors</p>
               </div>
               <div className="dashcarddiv22">
                 <img src={Frame2016} alt="" />
@@ -131,7 +131,7 @@ const Dashboard = () => {
                 <div>
                   <img src={<CgScreen />} alt="" />
                   <div>
-                    <p>20 Mins</p>
+                    <p>Few Mins</p>
                     <p>Duration</p>
                   </div>
                 </div>
