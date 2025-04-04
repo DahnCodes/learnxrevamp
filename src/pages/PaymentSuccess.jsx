@@ -4,8 +4,8 @@ import "../styles/paymentsuccess.css";
 import { useNavigate } from "react-router-dom";
 
 const PaymentSuccess = ({ frontendUrl = "/dashboard" }) => {
-  const [isVerified, setIsVerified] = useState(false);
-  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [verificationError, setVerificationError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -13,7 +13,8 @@ const PaymentSuccess = ({ frontendUrl = "/dashboard" }) => {
       const reference = localStorage.getItem("payment_reference");
       
       if (!reference) {
-        setError("No payment reference found");
+        setVerificationError("Payment reference missing");
+        setIsLoading(false);
         return;
       }
 
@@ -22,56 +23,28 @@ const PaymentSuccess = ({ frontendUrl = "/dashboard" }) => {
           `https://learnx-official-api.onrender.com/api/v1/payment/verify/${reference}`
         );
 
-        if (!response.ok) {
-          throw new Error("Payment verification failed");
-        }
-
         const data = await response.json();
-        console.log("Payment Verification Data:", data);
+        console.log("Verification response:", data);
 
-        if (data.status === "success") {
-          setIsVerified(true);
-          // Clear the reference after successful verification
-          localStorage.removeItem("payment_reference");
-          
-          // Store payment verification in localStorage
-          localStorage.setItem("payment_verified", "true");
-        } else {
-          throw new Error(data.message || "Payment verification unsuccessful");
+        if (!response.ok || data.status !== "success") {
+          throw new Error(data.message || "Payment verification failed");
         }
+
+        // If we get here, verification was successful
+        localStorage.removeItem("payment_reference");
+        localStorage.setItem("payment_verified", "true");
       } catch (err) {
         console.error("Verification error:", err);
-        setError(err.message);
-        // Removed the navigate("/payment") call here
+        setVerificationError(err.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     verifyPayment();
   }, [navigate]);
 
-  if (error) {
-    return (
-      <div className="payment-container">
-        <h2>Payment Verification Failed</h2>
-        <p className="error-message">{error}</p>
-        <button 
-          className="backbtns"
-          onClick={() => navigate("/payment")}
-        >
-          Return to Payment
-        </button>
-        <button 
-          className="backbtns"
-          onClick={() => navigate(frontendUrl)}
-          style={{ marginTop: "10px" }}
-        >
-          Go to Dashboard
-        </button>
-      </div>
-    );
-  }
-
-  if (!isVerified) {
+  if (isLoading) {
     return (
       <div className="payment-container">
         <h2>Verifying your payment...</h2>
@@ -82,13 +55,26 @@ const PaymentSuccess = ({ frontendUrl = "/dashboard" }) => {
 
   return (
     <div className="payment-container">
-      <h2>Payment was successful! 🎉</h2>
-      <p>Click the button below to return to the dashboard.</p>
+      {verificationError ? (
+        <>
+          <h2>Payment Successful!</h2>
+          <p className="error-message">
+            Note: Verification encountered an issue - {verificationError}
+          </p>
+          <p>Your payment was processed successfully, but we couldnt verify it.</p>
+        </>
+      ) : (
+        <>
+          <h2>Payment was successful! 🎉</h2>
+          <p>Thank you for your purchase.</p>
+        </>
+      )}
+      
       <button 
         className="backbtns"
         onClick={() => navigate(frontendUrl)}
       >
-        Click here to return to the Homepage
+        Go to Dashboard
       </button>
     </div>
   );
