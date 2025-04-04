@@ -1,97 +1,167 @@
-import courseimg from "../assets/courseimg.png";
-import Group130 from "../assets/Group130.png";
+import { useEffect, useState } from "react";
+// import courseimg from "../assets/courseimg.png";
+// import Group130 from "../assets/Group130.png";
 // import Coursesdash from "../styles/Coursesdash.css";
 import "../styles/Newcourse.css";
 
 const Courses = () => {
+  
+  const [courses, setCourses] = useState([]);
+  const [currentWeek, setCurrentWeek] = useState('Week 1');
+  const [activePlayer, setActivePlayer] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const userToken = localStorage.getItem("userToken");
+        const response = await fetch("https://learnx-official-api.onrender.com/api/v1/course/CourseForTrack", {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${userToken}`,
+          },
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch courses");
+
+        const data = await response.json();
+        console.log("Fetched Courses Data:", data);
+
+        setCourses(data.allCourses || []);
+        if (data.allCourses?.length > 0) {
+          setCurrentWeek(`Week ${data.allCourses[0].week || '1'}`);
+        }
+      } catch (err) {
+        console.error("Error fetching courses:", err);
+        setError("Failed to load courses. Please try again later.");
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
+  const togglePlayer = (index, link) => {
+    setActivePlayer(activePlayer === index ? null : index);
+  };
+
+  const renderPlayerContent = (link) => {
+    if (!link) return <p>No content available</p>;
+
+    // PDF files
+    if (link.endsWith(".pdf")) {
+      return (
+        <div className="pdf-container">
+          <embed 
+            src={link} 
+            type="application/pdf" 
+            className="pdf-viewer" 
+          />
+          <button 
+            onClick={() => {
+              const container = document.querySelector('.pdf-container');
+              if (container?.requestFullscreen) container.requestFullscreen();
+            }}
+            className="fullscreen-button"
+          >
+            Fullscreen
+          </button>
+        </div>
+      );
+    }
+    
+    // YouTube videos
+    if (link.includes("youtube.com") || link.includes("youtu.be")) {
+      const videoId = link.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)?.[1];
+      return videoId ? (
+        <iframe 
+          src={`https://www.youtube.com/embed/${videoId}`}
+          frameBorder="0"
+          allowFullScreen
+          className="video-iframe"
+        />
+      ) : (
+        <p className="error-message">Invalid YouTube link</p>
+      );
+    }
+
+    // Video files
+    if (link.match(/\.(mp4|mov|mkv)$/)) {
+      return (
+        <video controls className="video-player">
+          <source src={link} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      );
+    }
+
+    // Word documents
+    if (link.endsWith(".docx")) {
+      return (
+        <iframe 
+          src={`https://docs.google.com/gview?url=${link}&embedded=true`}
+          frameBorder="0"
+          className="doc-iframe"
+        />
+      );
+    }
+
+    // Default case
+    return (
+      <iframe 
+        src={link}
+        frameBorder="0"
+        className="generic-iframe"
+      />
+    );
+  };
+
+  if (error) {
+    return <div className="error-container">{error}</div>;
+  }
+
   return (
-    <>
-      <div className="coursecontainer">
-        <div className="weekbutdiv">
-          <button className="weekbut">Week 3</button>
-        </div>
-        <div className="pagination">
-          <button className="nav-btn">{"<"}</button>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((num) => (
-            <button
-              key={num}
-              className={`page-btn ${num === 3 ? "active" : ""}`}
-            >
-              {num}
-            </button>
-          ))}
-          <button className="nav-btn">{">"}</button>
-        </div>
-        <div className="coursescontent">
-          <div className="learsoncard">
-            <p className="lesson-info">Lesson: 3 from 14</p>
-            <h3 className="lesson-title">Product Design</h3>
-            <p className="facilitator">
-              {" "}
-              <strong>Facilitator: Albert Paul</strong>
-            </p>
-            <div className="courseimgcontainer">
-              <img src={courseimg} alt="" className="courseimgvid" />
-              <div className="playbutdiv">
-                <button className="play-btn1">|▶</button>
-                <button className="play-btn">▶</button>
-                <button className="play-btn2">▶|</button>
+    <div className="courses-page">
+      <h1>Available Courses</h1>
+      <div className="current-week">{currentWeek}</div>
+      
+      <div className="course-container">
+        {courses.map((course, index) => (
+          <div 
+            key={index} 
+            className={`course-card ${activePlayer === index ? 'expanded' : ''}`}
+          >
+            {activePlayer !== index ? (
+              <div className="course-info">
+                <img 
+                  src={course.image || 'placeholder.jpg'} 
+                  alt="Course Thumbnail" 
+                />
+                <h3>{course.title || 'Untitled Course'}</h3>
+                <p>Category: {course.category || 'Unknown'}</p>
+                <p>Type: {course.type || 'N/A'}</p>
+                <p>Weekly Task: {course.weeklyTask || 'No task provided'}</p>
+                <button 
+                  className="view-course"
+                  onClick={() => togglePlayer(index, course.Link)}
+                >
+                  View Course
+                </button>
               </div>
-            </div>
-            <div className="supplementary">
-              <p>Supplementary Lesson Material</p>
-              <div className="file-container">
-                <img src={Group130} alt=""  className="pdf-icon"/>
-                <span className="file-name">Product_Design_Ideation_Supplementary_Material</span>
-                <button className="download-btn">Download</button>
+            ) : (
+              <div className="course-player">
+                {renderPlayerContent(course.Link)}
+                <button 
+                  className="close-player"
+                  onClick={() => togglePlayer(null)}
+                >
+                  Close
+                </button>
               </div>
-            </div>
-            <div className="about-topic">
-              <h3>About Topic</h3>
-              <p>
-                Ideation is the process of forming ideas from conception to
-                implementation, most often in a business setting. Ideation is
-                expressed via graphical, written, or verbal methods, and arises
-                from past or present knowledge, influences, opinions,
-                experiences, and personal convictions.
-              </p>
-            </div>
+            )}
           </div>
-
-          <div className="task-card">
-            <div>
-              <h3>Task</h3>
-              <p>
-                Ideate on a product you wish to market and come up with a
-                possible solution that will bring value to your target audience
-                and profit to you.
-              </p>
-            </div>
-
-            <div>
-              <h3>Submission</h3>
-              <p>Date:</p>
-              <p>Time:</p> 
-              
-            </div>
-
-            <div>
-            <label>Task Link</label>
-                <input type="text" placeholder="Input web link" />
-              
-
-              
-                <label>Host link</label>
-                <input type="text" placeholder="Input git link" />
-            </div>
-
-            <div>
-            <button className="tasksubbut">Submit</button>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
-    </>
+    </div>
   );
 };
 
