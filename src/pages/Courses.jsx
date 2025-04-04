@@ -12,7 +12,7 @@ const CoursePage = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const userToken = localStorage.getItem("userToken");
+        const userToken = localStorage.getItem("token");
         if (!userToken) {
           throw new Error("No authentication token found");
         }
