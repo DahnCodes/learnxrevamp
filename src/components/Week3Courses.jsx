@@ -11,7 +11,7 @@ const courses = [
 const Week3Courses = () => {
   return (
     <div className="courses-container">
-      <h2 className="title">Week 1 Courses</h2>
+      <h2 className="title">Week 2 Courses</h2>
       <hr />
 
       <div className="course-content">
