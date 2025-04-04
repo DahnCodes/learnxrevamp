@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import axios from 'axios';
 import "../styles/courses.css";
 
@@ -9,7 +9,6 @@ const CoursePage = () => {
   const [currentWeek, setCurrentWeek] = useState('Week 1');
   const [activePlayer, setActivePlayer] = useState(null);
   const [fullscreenPdf, setFullscreenPdf] = useState(false);
-  const [selectedWeek, setSelectedWeek] = useState('');
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -32,12 +31,7 @@ const CoursePage = () => {
         if (response.data && response.data.allCourses) {
           setCourses(response.data.allCourses);
           if (response.data.allCourses.length > 0) {
-            // Get all unique weeks from courses
-            const weeks = [...new Set(response.data.allCourses.map(course => course.week))];
-            
-            // Set the first week as default
-            setCurrentWeek(`Week ${weeks[0] || '1'}`);
-            setSelectedWeek(`Week ${weeks[0] || '1'}`);
+            setCurrentWeek(`Week ${response.data.allCourses[0].week || '1'}`);
           }
         } else {
           throw new Error("Invalid course data structure");
@@ -52,17 +46,6 @@ const CoursePage = () => {
 
     fetchCourses();
   }, []);
-
-  // Get unique weeks for dropdown
-  const getUniqueWeeks = () => {
-    const weeks = [...new Set(courses.map(course => course.week))];
-    return weeks.map(week => `Week ${week || '1'}`);
-  };
-
-  // Filter courses by selected week
-  const filteredCourses = courses.filter(course => 
-    `Week ${course.week || '1'}` === selectedWeek
-  );
 
   const toggleCoursePlayer = (index) => {
     setActivePlayer(activePlayer === index ? null : index);
@@ -165,30 +148,11 @@ const CoursePage = () => {
   return (
     <div className="course-page">
       <h1>Available Courses</h1>
-      
-      <div className="week-selector">
-        <label htmlFor="week-select">Select Week: </label>
-        <select
-          id="week-select"
-          value={selectedWeek}
-          onChange={(e) => {
-            setSelectedWeek(e.target.value);
-            setCurrentWeek(e.target.value);
-          }}
-        >
-          {getUniqueWeeks().map((week, index) => (
-            <option key={index} value={week}>
-              {week}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="current-week">Showing: {currentWeek}</div>
+      <div className="current-week">{currentWeek}</div>
       
       <div className="course-container">
-        {filteredCourses.length > 0 ? (
-          filteredCourses.map((course, index) => (
+        {courses.length > 0 ? (
+          courses.map((course, index) => (
             <div 
               key={index} 
               className={`course-card ${activePlayer === index ? 'active' : ''}`}
@@ -216,7 +180,7 @@ const CoursePage = () => {
             </div>
           ))
         ) : (
-          <p>No courses available for {currentWeek}</p>
+          <p>No courses available</p>
         )}
       </div>
     </div>
