@@ -9,7 +9,6 @@ const Information = () => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  // Initialize formData with empty values first
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -26,7 +25,6 @@ const Information = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Properly initialize form data when user loads
   useEffect(() => {
     if (user) {
       setFormData(prev => ({
@@ -38,7 +36,6 @@ const Information = () => {
     }
   }, [user]);
 
-  // Redirect if not authenticated
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/signin");
@@ -101,10 +98,10 @@ const Information = () => {
             <input
               type="text"
               name="firstname"
-              disabled
               placeholder="Enter First Name"
               value={formData.firstname}
-              readOnly // Better than disabled for form submission
+              onChange={handleChange}
+              required
             />
           </div>
           <div className="formgroupfist">
@@ -112,10 +109,10 @@ const Information = () => {
             <input
               type="text"
               name="lastname"
-              disabled
               placeholder="Enter Last Name"
               value={formData.lastname}
-              readOnly
+              onChange={handleChange}
+              required
             />
           </div>
           <div className="display_none">
@@ -127,7 +124,7 @@ const Information = () => {
           </div>
         </div>
 
-        {/* Date of Birth Fields - Fixed names */}
+        {/* Date of Birth Fields */}
         <div className="formgroupsec">
           <div className="groupagecon">
             <label>Date of Birth</label>
@@ -198,7 +195,7 @@ const Information = () => {
           <div className="formgroupfist">
             <label>Mobile Number</label>
             <input
-              type="tel" // Better for phone numbers
+              type="tel"
               name="phone"
               placeholder="Enter Mobile Number"
               value={formData.phone}
