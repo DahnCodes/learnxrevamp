@@ -149,6 +149,8 @@
   color: white;
   min-width: 530px;
   font-family: "Geologica", sans-serif;
+}
+.Div h1 {
   text-align: left;
 }
 
@@ -164,8 +166,6 @@
 .auth_layout111 {
   font-family: POPPINS;
 }
-
-
 
 .Divland2 {
   display: flex;
@@ -1202,7 +1202,9 @@ h4 {
     font-size: 28px;
     min-width: auto;
   }
-
+.Div h1{
+  text-align: center;
+}
   .Divland2 {
     flex-direction: column;
     gap: 15px;
@@ -1676,7 +1678,6 @@ h4 {
   }
   .about4 p {
     margin-top: 6px;
-    
   }
   .case {
     top: -10px;

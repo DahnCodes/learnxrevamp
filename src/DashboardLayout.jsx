@@ -52,7 +52,7 @@ const DashboardLayout = () => {
       <aside className={`Sidebar1 ${isMenuOpen ? 'open' : ''}`}>
         <div className="TOP1">
           <div className="Top1a">
-            <img src={Learnx} alt="LearnX Logo" className="topimg" />
+            <img src={Learnx} alt="LearnX Logo" className="topimg3" />
             <img src={Userx} alt="UserX Logo" className="topimg" />
           </div>
           <div className="Top1b">
@@ -62,10 +62,10 @@ const DashboardLayout = () => {
               <p>{user?.email}</p>
             </div>
           </div>
-          <div className="Top1c">
+          {/* <div className="Top1c">
             <input type="text" placeholder="Search" />
             <CiSearch className="searchimg" />
-          </div>
+          </div> */}
         </div>
         
         <div className="Middle1">

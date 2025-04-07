@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     column-gap: 13px;
+    padding: 20px 30px;
 }
 
 .dashboardsec{
