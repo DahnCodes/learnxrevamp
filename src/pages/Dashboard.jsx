@@ -33,7 +33,9 @@ const Dashboard = () => {
 
   // Format track name for display
   useEffect(() => {
-    const selectedTrack = localStorage.getItem("selected_course_track");
+    const selectedTrack = 
+    user?.track || 
+    localStorage.getItem("selected_course_track");
     
     const trackNames = {
       frontend: "frontend",
@@ -46,7 +48,7 @@ const Dashboard = () => {
     setCurrentTrack(
       selectedTrack ? trackNames[selectedTrack] || "Your Course" : "Your Course"
     );
-  }, []);
+  }, [user]);
   return (
     <>
       <div className="dashboardfist">
