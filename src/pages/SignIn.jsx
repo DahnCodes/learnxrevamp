@@ -41,18 +41,25 @@ const SignIn = () => {
       if (response.status === 200 || response.status === 201) {
         console.log(response.data);
         const loginData = response.data;
+        if (!loginData.user?.track) {
+          console.error("No track found in response:", loginData);
+        }
+  
         setLoading(false);
         dispatch(login(loginData)); // Store in Redux
 
         localStorage.setItem("user", JSON.stringify(loginData.user));
         localStorage.setItem("token", loginData.token);
+        localStorage.setItem("selected_course_track", loginData.user?.track || "");
 
-        
-        const userTrack = loginData.user?.track || null;
-        if (userTrack) {
-          localStorage.setItem("selected_course_track", userTrack);
-          console.log("Track saved to localStorage:", userTrack);
-        }
+        dispatch(login({
+          ...loginData,
+          user: {
+            ...loginData.user,
+            track: loginData.user?.track || localStorage.getItem("selected_course_track") || ""
+          }
+        }));
+  
       
         console.log("Track from backend:", loginData.user.track);
         if (loginData.user.isPaid === false) {

@@ -32,23 +32,38 @@ const Dashboard = () => {
   }, [isAuthenticated, navigate]);
 
   // Format track name for display
-  useEffect(() => {
-    const selectedTrack = 
+  
+    const trackSource = 
     user?.track || 
-    localStorage.getItem("selected_course_track");
-    
-    const trackNames = {
-      frontend: "frontend",
-      backend: "backend",
-      design: "Product Design",
-      uiux: "UI/UX Design",
-      machine: "AI and Machine Learning"
-    };
+    localStorage.getItem("selected_course_track") || 
+    "";
 
-    setCurrentTrack(
-      selectedTrack ? trackNames[selectedTrack] || "Your Course" : "Your Course"
-    );
-  }, [user]);
+  // Track mappings with consistent casing
+  const trackMappings = {
+    "frontend": { name: "frontend", initials: "FD" },
+    "backend": { name: "backend", initials: "BD" },
+    "product-design": { name: "Product Design", initials: "PD" },
+    "data-analysis": { name: "Data Analysis", initials: "DA" },
+    "artificial-intelligence": { name: "AI & Machine Learning", initials: "AI" },
+    // Legacy mappings
+    "design": { name: "Product Design", initials: "PD" },
+    "uiux": { name: "UI/UX Design", initials: "UX" },
+    "machine": { name: "AI and Machine Learning", initials: "AI" }
+  };
+
+  // Set the current track
+  setCurrentTrack(
+    trackSource ? 
+      (trackMappings[trackSource.toLowerCase()] || { name: "Your Course", initials: "YC" }) : 
+      { name: "Your Course", initials: "YC" }
+  );
+  useEffect(() => {
+    console.log("Current track sources:", {
+      reduxUser: user,
+      localStorageTrack: localStorage.getItem("selected_course_track"),
+      currentTrack: currentTrack
+    });
+  }, [user, currentTrack]);
   return (
     <>
       <div className="dashboardfist">
@@ -212,6 +227,6 @@ const Dashboard = () => {
       </div>
     </>
   );
-};
+  };
 
 export default Dashboard;
