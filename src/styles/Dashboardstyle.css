@@ -351,6 +351,7 @@
     .dashboardsec {
       grid-column: span 1;
       padding: 0;
+      width: 90%;
     }
   
     .calenderdiv {
@@ -363,12 +364,16 @@
     .dashboardflex {
       grid-template-columns: 1fr;
       gap: 15px;
+      padding: 0 20px;
+    /* max-width: fit-content; */
+     /* max-width: 100%; */
+   
     }
   
     .dashcard,
     .dashcard1,
     .dashcard2 {
-      width: 100%;
+      width: 95%;
       height: auto;
       padding: 15px;
     }

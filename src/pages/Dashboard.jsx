@@ -32,31 +32,23 @@ const Dashboard = () => {
   }, [isAuthenticated, navigate]);
 
   // Format track name for display
-  
-    const trackSource = 
+  useEffect(() => {
+    const selectedTrack = 
     user?.track || 
-    localStorage.getItem("selected_course_track") || 
-    "";
+    localStorage.getItem("selected_course_track");
+    
+    const trackNames = {
+      frontend: "frontend",
+      backend: "backend",
+      design: "Product Design",
+      uiux: "UI/UX Design",
+      machine: "AI and Machine Learning"
+    };
 
-  // Track mappings with consistent casing
-  const trackMappings = {
-    "frontend": { name: "frontend", initials: "FD" },
-    "backend": { name: "backend", initials: "BD" },
-    "product-design": { name: "Product Design", initials: "PD" },
-    "data-analysis": { name: "Data Analysis", initials: "DA" },
-    "artificial-intelligence": { name: "AI & Machine Learning", initials: "AI" },
-    // Legacy mappings
-    "design": { name: "Product Design", initials: "PD" },
-    "uiux": { name: "UI/UX Design", initials: "UX" },
-    "machine": { name: "AI and Machine Learning", initials: "AI" }
-  };
-
-  // Set the current track
-  setCurrentTrack(
-    trackSource ? 
-      (trackMappings[trackSource.toLowerCase()] || { name: "Your Course", initials: "YC" }) : 
-      { name: "Your Course", initials: "YC" }
-  );
+    setCurrentTrack(
+      selectedTrack ? trackNames[selectedTrack] || "Your Course" : "Your Course"
+    );
+  }, [user]);
   useEffect(() => {
     console.log("Current track sources:", {
       reduxUser: user,
@@ -68,7 +60,7 @@ const Dashboard = () => {
     <>
       <div className="dashboardfist">
         <div className="dashboardsec">
-          <h3>Hi, {user?.firstname} ({currentTrack.split(" ").map(word => word[0]).join('')})</h3>
+          <h3>Hi, {user?.firstname}</h3>
 
           <div className="dashboardflex">
             <div className="dashcard">
@@ -227,6 +219,6 @@ const Dashboard = () => {
       </div>
     </>
   );
-  };
+};
 
 export default Dashboard;
