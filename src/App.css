@@ -139,7 +139,7 @@
 }
 
 .Divland1 {
-  padding:  100px;
+  padding: 100px;
   /* padding-top: 13%; */
   overflow: hidden;
 }
@@ -149,6 +149,7 @@
   color: white;
   min-width: 530px;
   font-family: "Geologica", sans-serif;
+  text-align: left;
 }
 
 .Div p {
@@ -164,8 +165,7 @@
   font-family: POPPINS;
 }
 
-.Divland1 p {
-}
+
 
 .Divland2 {
   display: flex;
