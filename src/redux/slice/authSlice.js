@@ -6,6 +6,7 @@ const initialState = {
   token: null,
   isAuthenticated: false,
   message: "",
+  track: null,
 };
 
 const authSlice = createSlice({
@@ -17,6 +18,7 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       state.isAuthenticated = true;
       state.message = action.payload.message;
+      state.track = action.payload.user.track;
     },
     logout: (state) => {
       state.user = null;
