@@ -212,7 +212,7 @@ const Dashboard = () => {
             </div>
             <div className="subtask2">
               <input type="text" placeholder="Input Task link Here" />
-              <button>Subit</button>
+              <button>Submit</button>
             </div>
           </div>
         </div>

@@ -64,7 +64,7 @@ function Landingpage() {
             </div>
             <div className="Divland3">
               <div className="Divland6">
-                <h5>10+</h5>
+                <h5>5+</h5>
                 <p>Courses to choose from </p>
               </div>
               <div className="Divland6">
@@ -73,7 +73,7 @@ function Landingpage() {
               </div>
 
               <div className="Divland6">
-                <h5>5k+</h5>
+                <h5>2k+</h5>
                 <p>Successful Stories</p>
               </div>
             </div>

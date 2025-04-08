@@ -343,39 +343,126 @@ height: 12px;
   }
  
 
-@media (max-width: 425px) {
+  @media (max-width: 425px) {
     /* Main container adjustments */
     .dashlayout_container {
-      flex-direction: column;
+      display: block;
       height: auto;
       overflow: visible;
-    }
-  
-    /* Sidebar adjustments */
-    .Sidebar1 {
-      width: 100%;
-      height: auto;
-      padding: 10px;
+      margin-top: 0;
       position: relative;
     }
-  
-    /* Top section adjustments */
-    .Top1a {
-      flex-direction: column;
-      align-items: center;
-      padding-top: 10px;
-      gap: 10px;
+  .navinputdash{
+    display: none;
+  }
+    /* Mobile header styling */
+    .mobile-header {
+      display: flex;
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background-color: #133A25;
+      z-index: 1000;
+      padding: 10px 15px;
     }
   
+    /* Sidebar - initially hidden */
+    .Sidebar1 {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 999;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      padding: 20px;
+      overflow-y: auto;
+      background-color: #133A25;
+    }
+  
+    /* When hamburger is checked (menu open) */
+    #hamburger-toggle:checked ~ .Sidebar1 {
+      transform: translateX(0);
+    }
+  
+    /* Overlay when menu is open */
+    #hamburger-toggle:checked ~ .maindash::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 998;
+    }
+  
+    /* Main content adjustments */
+    .maindash {
+      width: 100%;
+      overflow-x: hidden;
+      position: relative;
+      transition: margin-left 0.3s ease;
+    }
+  
+    /* Hide checkbox */
+    #hamburger-toggle {
+      display: none;
+    }
+  
+    /* Hamburger button styling */
+    .hamburger-btn {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 24px;
+      height: 18px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 1001;
+    }
+  
+    .hamburger-btn span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: white;
+      transition: all 0.3s ease;
+    }
+  
+    /* Adjust sidebar content for mobile */
+    .Top1a {
+      flex-direction: column;
+      align-items: flex-start;
+      padding-top: 40px;
+      gap: 15px;
+      overflow: hidden;
+    }
+  
+    .Middle1 {
+      padding: 20px 0;
+    }
+  
+    /* Rest of your existing mobile styles... */
     .Top1b {
       flex-direction: column;
       gap: 5px;
-      text-align: center;
+      /* text-align: left; */
+      overflow: hidden;
+     
     }
-  
+  .Top1b h4{
+    font-size: 16px;
+  }
+  .Top1b p{
+    font-size: 12px;
+  }
     .Top1c input {
       width: 100%;
-      max-width: 300px;
+      max-width: 100%;
     }
   
     .searchimg {
@@ -383,79 +470,14 @@ height: 12px;
       top: 8px;
     }
   
-    /* Navigation menu adjustments */
-    .Middle1 {
-      padding: 10px 5px;
-    }
-  
     .Middle1 li {
-      padding: 8px 5px;
-      font-size: medium;
+      padding: 12px 5px;
     }
   
-    .Middle1 li .linkTag {
-      column-gap: 5px;
-      padding: 3px;
-    }
-  
-    /* Bottom menu adjustments */
     .Bottom1 {
-      padding: 10px 5px;
+      padding: 20px 0;
     }
-  
-    .Bottom1 li {
-      padding: 8px 5px;
-      font-size: medium;
-    }
-  
-    /* Main content area adjustments */
-    .maindash {
-      width: 100%;
-      overflow: visible;
-    }
-  
-    /* Header adjustments */
-    .headerdash {
-      height: auto;
-      padding: 10px;
-    }
-  
-    .navinputdash {
-      flex-direction: column;
-      height: auto;
-      gap: 15px;
-      padding: 10px;
-    }
-  
-    .searchdash1 {
-      width: 100%;
-    }
-  
-    .searchdash1 input {
-      width: 100%;
-      max-width: 300px;
-    }
-  
-    .notificationdash {
-      justify-content: center;
-      width: 100%;
-    }
-  
-    /* Hide non-essential elements if needed */
-    .topimg, .imgtopb {
-      height: 16px;
-    }
-  
-    /* Active/hover states */
-    .Middle1 li .linkTag.selected,
-    .Middle1 li .linkTag:hover,
-    .Bottom1 li:hover {
-      width: 100%;
-      border-left: 2px solid #FF7B00;
-    }
-  }
-
-
+}
 
 
 

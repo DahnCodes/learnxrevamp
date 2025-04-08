@@ -343,99 +343,97 @@
     border: 1px solid #FF7B00;
 }
 @media (max-width: 425px) {
-    .dashboardfist {
-      grid-template-columns: 1fr;
-      padding: 0 10px;
-    }
-  
-    .dashboardsec {
-      grid-column: span 1;
-      padding: 0;
-      width: 90%;
-    }
-  
-    .calenderdiv {
-      grid-column: span 1;
-      margin-top: 20px;
-      padding: 15px;
-      row-gap: 20px;
-    }
-  
-    .dashboardflex {
-      grid-template-columns: 1fr;
-      gap: 15px;
-      padding: 0 20px;
-    /* max-width: fit-content; */
-     /* max-width: 100%; */
-   
-    }
-  
-    .dashcard,
-    .dashcard1,
-    .dashcard2 {
-      width: 95%;
-      height: auto;
-      padding: 15px;
-    }
-  
-    .dashcarddiv22 {
-      gap: 20px;
-    }
-  
-    .communitydiv {
-      padding: 15px 10px;
-      row-gap: 15px;
-    }
-  
-    .communitybut {
-      width: 100%;
-    }
-  
-    .dashcourse {
-      grid-template-columns: 1fr;
-      gap: 15px;
-    }
-  
-    .dashtopic {
-      height: auto;
-      padding: 15px;
-    }
-  
-    .dateandt,
-    .taskdead,
-    .subtask {
-      padding: 0 10px;
-    }
-  
-    .subtask2 input {
-      width: 60%;
-    }
-  
-    .subtask2 button {
-      width: 40%;
-      padding: 0 10px;
-    }
-  
-    .calle {
-      width: 100%;
-    }
-  
-    .dashp1 {
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-  
-    .certimg {
-      width: 80px;
-    }
-  
-    .dashtopic2 {
-      flex-direction: column;
-      gap: 10px;
-      align-items: flex-start;
-    }
-  
-    .linktopic {
-      margin-top: 10px;
-    }
+  .dashboardfist {
+    grid-template-columns: 1fr;
+    padding: 35px 10px; 
+    margin-top: 0;
+    /* width: 90%; */
   }
+
+  .dashboardsec {
+    grid-column: span 1;
+    padding: 0;
+    width: 100%;
+  }
+
+  .calenderdiv {
+    grid-column: span 1;
+    margin-top: 20px;
+    padding: 15px;
+    row-gap: 20px;
+    width: 90%;
+  }
+
+  .dashboardflex {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding: 0 15px;
+  }
+
+  .dashcard,
+  .dashcard1,
+  .dashcard2 {
+    width: 90%;
+    height: auto;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+
+  .communitydiv {
+    padding: 15px;
+    width: 90%;
+    row-gap: 15px;
+  }
+
+  .dashcourse {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  /* Ensure no horizontal overflow */
+  .headerdash,
+  .navinputdash,
+  .dashboardfist,
+  .dashboardsec {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Fix for sticky header */
+  .headerdash {
+    position: sticky;
+    top: 0;
+    z-index: 990;
+  }
+
+  /* Adjust search input */
+  .searchdash1 input {
+    width: 80% !important;
+    max-width: 80% !important;
+  }
+  
+.subtask2{
+overflow: hidden;
+ 
+  
+}
+.subtask2 input{
+  height: 40px;
+  width: 100%;
+  border-radius: 20px 0px 0px 20px;
+  border: 1px solid #596275;
+  padding-left: 9px;
+}
+.subtask2 button{
+  height: 40px;
+  width: 104px;
+  padding: 0px 20px;
+  background-color: #FF7B00;
+  border-style: none;
+  outline: none;
+  color: white;
+  height: 100%;
+  border-radius: 0px 20px 20px 0px ;
+  border: 1px solid #FF7B00;
+}
+}
